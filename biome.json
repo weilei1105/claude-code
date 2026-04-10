@@ -30,7 +30,11 @@
 				"noArrayIndexKey": "off",
 				"noConsole": "off",
 				"noConfusingLabels": "off",
-				"useIterableCallbackReturn": "off"
+				"useIterableCallbackReturn": "off",
+				"noTemplateCurlyInString": "off",
+				"noControlCharactersInRegex": "off",
+				"noSelfCompare": "off",
+				"noAsyncPromiseExecutor": "off"
 			},
 			"style": {
 				"useConst": "off",
@@ -55,7 +59,9 @@
 				"noUselessLoneBlockStatements": "off",
 				"noUselessEmptyExport": "off",
 				"useArrowFunction": "off",
-				"useLiteralKeys": "off"
+				"useLiteralKeys": "off",
+				"noArguments": "off",
+				"noCommaOperator": "off"
 			},
 			"correctness": {
 				"noUnusedVariables": "off",

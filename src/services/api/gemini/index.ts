@@ -107,7 +107,7 @@ export async function* queryModelGemini(
 
     const adaptedStream = adaptGeminiStreamToAnthropic(stream, geminiModel)
     const contentBlocks: Record<number, any> = {}
-    let partialMessage: any = undefined
+    let partialMessage: any 
     let ttftMs = 0
     const start = Date.now()
 
