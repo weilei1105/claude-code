@@ -1,0 +1,179 @@
+## 抽水蓄能投产高峰
+
+发布日期: 发布时间：2026-04-03
+
+<body><div data="datasource:2026040330865dc8fd3d4f33a83e3c7202ddfbd9" datatype="content"><meta name="ArticleTitle" content="风口已现，抽水蓄能将迎投产高峰"></div> <div data="datasource:2026040330865dc8fd3d4f33a83e3c7202ddfbd9" datatype="content"><meta name="PubDate" content="2026-04-03 14:25:05"></div> <div data="datasource:2026040330865dc8fd3d4f33a83e3c7202ddfbd9" datatype="content"><meta name="ContentSource" content="中国能源新闻网"></div> <meta name="description" content="国家能源网"><meta name="keywords" content="国家能源网"><title data="datasource:2026040330865dc8fd3d4f33a83e3c7202ddfbd9" datatype="content">
+            风口已现，抽水蓄能将迎投产高峰---国家能源局
+        </title><link href="http://www.nea.gov.cn/static/default/css/public/master_nyj_v1.0.css" rel="stylesheet" type="text/css"><link href="http://www.nea.gov.cn/static/default/css/article.css" rel="stylesheet" type="text/css"><link href="http://www.nea.gov.cn/2015nyj/xinban/topbase.css" rel="stylesheet"><link href="http://www.nea.gov.cn/detail/css/cb_videoPlayer.css" rel="stylesheet"><script async="" src="//webd.home.news.cn/webdig.js?z=1"></script><script src="http://www.nea.gov.cn/static/default/js/public/jquery-1.9.1.min.js" type="text/javascript"></script><script language="javascript">
+        $(document).ready(function () {
+
+            var lefttmp = new Image();
+            lefttmp.src = "http://www.xinhuanet.com/photo/static/arr_left.cur";
+            var righttmp = new Image();
+            righttmp.src = "http://www.xinhuanet.com/photo/static/arr_right.cur";
+            leng = $("a", $("#div_currpage")).length;
+
+            if (leng != 0)
+            //curr里有a标签==稿件不止一页
+            {
+
+                //看一共有多少个a标签
+                leng = leng - 1;
+                var nextLin = $("a", $("#div_currpage"))[leng].href; //对于多页的情况，取得下一页的地址
+                var oneword = location.href + "#";
+                if (nextLin == oneword) {
+                    leng = leng - 1;
+                    nextLin = $("a", $("#div_currpage"))[leng].href;
+                }
+                var currurl = location
+                    .href; //当前页链接地址<meta http-equiv="expires" content="Sunday 26 October 2011 01:00 GMT" /> 
+
+                var underpd = currurl.substring(currurl.indexOf("c_") + 2, currurl.indexOf(".htm"));
+                if (underpd.indexOf("_") == -1) {
+
+                    prevLink = location.href; //如果是文章首页，则左键仍是替换到本页面
+                    nextLink = $("a", $("#div_currpage"))[0].href; //下一页的赋值
+                    setTimeout("window.opener=null;window.location.href='" + nextLink + "'", 60000); //30秒跳转到下一页
+                } else
+                //是末页，http://news.xinhuanet.com/photo/2011-08/06/c_121822530.htm
+                {
+                    //当前页分页号判断
+                    var currnum = currurl.indexOf(".htm"); //链接中第一次出现.htm的位置
+                    var underlineindex = currurl.lastIndexOf("_") + 1; //下划线甄别标识，第一页则不是下划线
+                    //下一页的分页号
+                    var nextnum = nextLin.indexOf(".htm"); //链接中第一次出现.htm的位置
+                    var underlinenext = nextLin.lastIndexOf("_") + 1; //下划线甄别标识，第一页则不是下划线
+                    var undernum = nextLin.substr(nextLin.indexOf("c_")).split("_").length - 1;
+
+                    var temp = currurl.substring(underlineindex, currnum); //当前页的分页号
+                    var nexttemp = nextLin.substring(underlinenext, nextnum); //最后a标签的分页号
+                    var boolx = parseInt(temp, 10) > parseInt(nexttemp, 10);
+
+                    if ((boolx) || (undernum == 1)) //末页
+
+                    {
+
+                        if ($("img", $("a", $("#content"))).length == 0) //没有带链接的图片
+
+                        {
+                            prevLink = nextLin;
+                            if (undernum == 1) {
+                                nextLink = nextLin;
+                            } else {
+                                nextLink = prevLink.substr(0, (prevLink.lastIndexOf("_"))) + ".htm";
+                            }
+                            setTimeout("window.opener=null;window.location.href='" + nextLink + "'",
+                                60000); //30秒跳转到下一页
+                        } else //末页正文图片有链接
+                        {
+                            prevLink = nextLin;
+                            nextLink = $("a", $("#content"))[0].href; //把正文第一个带链接的链接地址赋给下一页
+                        }
+
+                    } else //不是末页
+                    {
+
+                        prevLink = $("a", $("#div_currpage"))[0].href; //把正文第一个带链接的链接地址赋给下一页
+                        nextLink = nextLin; //把正文最后一个带链接的链接地址赋给下一页
+                    }
+
+                }
+            } else
+            //只有一页
+            {
+                prevLink = location.href;
+                nextLink = location.href;
+            }
+
+            document.onkeydown = pageEvent;
+
+            function pageEvent(evt) {
+                evt = evt || window.event;
+                var key = evt.which || evt.keyCode;
+                if (key == 37) location = prevLink;
+                if (key == 39) location = nextLink;
+            };
+
+            var lefturl = prevLink;
+            var righturl = nextLink;
+            var imgurl = righturl;
+
+            $("#content img").each(function () {
+                var width = $(this).width();
+                var thisImage = $(this);
+                //alert("01");
+                $(thisImage)[0].onmousemove = function () {
+
+                    if (event.offsetX < width / 2) {
+
+                        this.style.cursor = 'url(' + lefttmp.src + '),auto';
+                        imgurl = lefturl;
+                    } else {
+
+                        this.style.cursor = 'url(' + righttmp.src + '),auto';
+                        imgurl = righturl;
+                    }
+
+                }
+
+                $(thisImage)[0].onmouseup = function () {
+                    top.location = imgurl;
+
+                }
+            });
+
+        });
+    </script><script src="http://www.nea.gov.cn/2015nyj/xinban/topnav.js" type="text/javascript"></script><div class="top_nav">
+<div class="menu_area">
+<ul class="menu"><li><a href="http://www.nea.gov.cn" target="_blank">返回首页</a>|</li>
+<li><a href="http://www.nea.gov.cn/wzdt/index.htm" target="_blank">网站地图</a>|</li>
+<li><a onclick="SetHome(this,'http://www.nea.gov.cn/2015v/2015version.htm');" href="javascript:void(0);">设为首页</a>|</li>
+<li><a onclick="AddFavorite('我的网站',location.href)" href="javascript:void(0);">加入收藏</a>|</li>
+<li><a href="http://www.nea.gov.cn/lxwm/index.htm" target="_blank">联系我们</a>|</li>
+<li><a href="http://mail.nea.gov.cn/" target="_blank">工作邮箱登录</a></li>
+</ul></div>
+</div>
+<div class="top_area">
+<div class="search_box">
+<div class="small_search">
+        <form target="_blank" id="nyj" method="get" action="https://www.nea.gov.cn/search.htm?">
+<input class="text_area" type="text" id="searchword" name="kw" value="请输入关键字" onkeydown="KeyDown()"><a href="javascript:" type="submit class=" search_button onclick="searchsearch()"></a>
+<input class="search_button" type="submit" value=" "></form></div>
+<div class="topMenu">
+<ul><li><span><a href="http://www.nea.gov.cn" target="_blank">首 页</a></span></li>
+<li><span><a href="http://www.nea.gov.cn/zfxxgk/gkzn.htm" target="_blank">信息公开</a></span></li>
+<li><span><a href="http://www.nea.gov.cn/ldhd/index.htm" target="_blank">领导活动</a></span></li>
+<li><span><a href="http://www.nea.gov.cn/xwzx/index.htm" target="_blank">新闻中心</a></span></li>
+<li><span><a href="http://www.nea.gov.cn/xwzx/nyyw.htm" target="_blank">能源要闻</a></span></li>
+<li><span><a href="https://xzsp.nea.gov.cn/nea/" target="_blank">在线办事</a></span></li>
+</ul><div class="clear"></div>
+</div>
+</div>
+</div>
+<script src="http://www.nea.gov.cn/2015nyj/xinban/jquery.js" type="text/javascript"></script><div class="main-colum"><div class="now-site">您当前位置：<a href="http://www.nea.gov.cn/" target="_blank">首页</a> &gt; 正文</div> <div class="channel-page"><div class="article-title" data="datasource:2026040330865dc8fd3d4f33a83e3c7202ddfbd9" datatype="content"><div class="hr_10"></div> <div class="titles">
+                        风口已现，抽水蓄能将迎投产高峰
+                    </div> <div class="hr_10"></div> <span class="times">
+                        发布时间：2026-04-03
+                    </span> <span class="author">
+                        来源：中国能源新闻网
+                    </span> <span class="switchsize"><b class="bigger">大</b><b class="medium">中</b><b class="smaller">小</b></span> <div class="arrow"></div></div> <div class="article-box"><div class="hr_10"></div> <div class="hr_10"></div> <div class="hr_10"></div> <div id="detail" data="datasource:2026040330865dc8fd3d4f33a83e3c7202ddfbd9" datatype="content"><div class="article-content"><span id="detailContent"><p>　“抽水蓄能是当前技术最成熟、经济性最优、最具大规模开发条件的电力系统绿色低碳清洁灵活调节电源。”三个“最”的表述出自国家能源局发布的《抽水蓄能中长期发展规划（2021—2035年）》，这是国家层面对抽水蓄能作用的权威定调与高度认可。</p><p>　　在风、光等新能源大规模高比例发展，新型电力系统对调节电源需求迫切的当下，抽水蓄能的作用日益凸显。最新发布的《中华人民共和国国民经济和社会发展第十五个五年规划纲要》指出，科学布局抽水蓄能。在厂址资源好、负荷调节需求大的地区建设一批抽水蓄能电站，新增投产装机容量1亿千瓦左右。</p><p><span style="color: #000080;"><strong>　　具备广阔开发潜力</strong></span></p><p>　　既是新型电力系统“稳定器”，又是电网“巨型充电宝”，抽水蓄能项目价值突出，其开发潜力自然备受关注。</p><p>　　据水电水利规划设计总院发布的《抽水蓄能产业发展报告2024年度》，全国普查筛选可开发总资源约16亿千瓦（含已建、在建、规划），其中在建、核准的约2亿千瓦。截至2025年8月底，我国抽水蓄能电站建成投产6236.5万千瓦。目前我国抽水蓄能资源开发不足4%，未来仍具备广阔的开发空间与巨大发展潜力。</p><p>　　根据规划，我国通过“三步走”部署，分阶段实现抽水蓄能发展目标。2025年投产6200万千瓦的目标已经完成。到2030年，投产总规模翻一番，达到1.2亿千瓦左右；到2035年，形成满足新能源高比例大规模发展需求的，技术先进、管理优质、国际竞争力强的抽水蓄能现代化产业。</p><p>　　因此，未来10年是我国抽水蓄能投产高峰期，规模将快速扩张。</p><p>　　不过，我国抽水蓄能资源禀赋存在一个显著特征——东部地区顶级优质站点已基本完成布局，开发整体进入中后期。然而中西部优质资源依然充裕，家底厚实、开发程度尚浅，未来10—20年将成为核心增量区域。</p><p>　　“从发展格局看，抽水蓄能电站逐步由东向西规模化发展。”水电水利规划设计总院副院长赵增海认为。</p><p>　　行业公认的优质站点，通常同时满足多方面特征：一是地形地质优：上下库成库条件好、水头高、距高比合理、地质稳定、防渗条件佳。二是水源有保障：水量充足、水质稳定、取水便利。三是经济性好：单位千瓦投资低、移民与环境代价小、靠近电网与负荷中心。四是系统适配强：能高效服务电网调峰、调频、新能源消纳。</p><p>　　我国抽水蓄能优质站点规模达4.21亿千瓦。</p><p>　　这一数字源于《抽水蓄能中长期发展规划（2021—2035年）》。规划对满足阶段深度要求、开发条件成熟且不涉及生态保护红线等环境制约因素的项目，按照应纳尽纳原则纳入重点实施项目库，其总装机规模即为4.21亿千瓦。</p><p>　　这4.21亿千瓦重点实施项目，对应优良站址，是从全国约16亿千瓦总资源中优中选优、开发条件成熟、具备近期开工建设条件的站点。</p><p>　　从区域布局看，重点实施项目主要分布在：华北地区的河北、山东；东北地区的辽宁、黑龙江、吉林；华东地区的浙江、安徽；南方地区的广东、广西；华中地区的河南、湖南、湖北，“三北”地区均为重点布局区域。上述布局大多围绕服务新能源大规模开发利用展开，同时兼顾核电发展、电力外送与受电、城市群经济建设及负荷中心发展等多重需求。</p><p><span style="color: #000080;"><strong>　　新类型优质资源加速涌现</strong></span></p><p>　　我国抽水蓄能发展面临优质站点资源减少的挑战，但并非开发完毕，而是进入“优中选优、区域转移、类型多元”的新阶段。</p><p>　　随着站点资源普查与项目储备工作不断推进，加之关键技术持续突破，新类型优质资源加速涌现。一是混合式抽水蓄能，依托现有水电站增建扩容，具有建设条件优、投资成本低、建设周期短等优势，开发潜力巨大。二是矿坑及废弃水库改造，能够变废为宝、生态友好、造价低廉，已成为新兴优质资源来源。三是高海拔及特殊地质区域开发，随着关键技术取得突破，一批以往难以利用的站点转化为可开发优质资源。上述三类新型优质资源均已完成技术验证并实现项目落地。</p><p>　　混合式抽水蓄能依托现有水电资源，具备投资省、见效快等显著优势，是东部及西南水电基地重要的新增开发方向，亦符合国家重点鼓励方向。</p><p>　　据悉，利用已建水库减少征地与新建大坝，投资可降低20%—30%、建设周期缩短2—3年。</p><p>　　全球在建最大混合式抽水蓄能电站——两河口抽蓄电站2026年2月迎来两项工程节点，为工程的顺利推进按下加速键。</p><p>　　该电站安装4台30万千瓦可逆式机组，与300万千瓦常规机组联合运行，总装机规模达420万千瓦，建成后兼具天然径流发电与抽水蓄能双向调节功能。</p><p>　　矿坑改造兼顾生态效益与经济效益，为资源枯竭型城市转型发展提供了有效路径。</p><p>　　滦平抽水蓄能电站便是全国首个利用现有矿坑建设抽水蓄能的项目。电站2022年开工，上水库布置在平顶山西沟沟顶，下水库利用承德宝通矿业有限公司开采铁矿形成的矿坑成库。</p><p>　　利用已有的矿坑，形成了节约项目建设资金与矿山生态修复的双赢格局，项目计划于2028年10月竣工，2029年年初运营。</p><p>　　此前，高海拔地区受高寒缺氧、地质条件复杂等技术瓶颈制约，抽水蓄能难以实现规模化开发。近年来，随着高海拔专用装备、深埋地下工程、智能建造等技术持续突破，该类站点已转化为经济可行的优质可开发资源。</p><p>　　技术层面，尤为值得一提的是中国西电研制的4000米海拔抽水蓄能成套开关设备。长期以来，我国高海拔抽水蓄能开关设备依赖进口，存在设计单一、接口标准不统一、运维复杂及潜在断供风险等问题。该技术突破，为我国高寒高海拔地区抽水蓄能开发提供了关键装备支撑。</p><p>　　新疆阜康抽水蓄能电站是已投产高海拔电站的典型代表。该电站2024年7月投产，总装机120万千瓦，可实现双向、双倍调节，调节能力达240万千瓦，年可增发新能源电量26亿千瓦时。建设中针对高海拔地区生态脆弱的特点，同步实施绿色生态修复，实现工程建设与环保协同推进。</p><p><span style="color: #000080;"><strong>　　行业迈向市场机制驱动新阶段</strong></span></p><p>　　近年来，我国逐步建立完善抽水蓄能电价形成机制，对促进抽水蓄能电站加快发展、提升电站综合效益发挥了重要作用。</p><p>　　抽水蓄能价格政策领域有两项里程碑式文件，国网电力工程研究院有限公司副总经理、党委委员任志武在其署名文章中指出：一是2021年印发的《关于进一步完善抽水蓄能价格形成机制的意见》（简称“633号文”）；二是2026年1月出台的《关于完善发电侧容量电价机制的通知》（简称“114号文”）。</p><p>　　新出台的114号文，核心是给抽水蓄能定了更清晰、更稳定、更市场化的“赚钱规则”，让抽水蓄能行业迈向市场机制驱动发展新阶段。</p><p>　　114号文实行“老站老政策、新站新政策”，对存量与新增抽水蓄能项目实施差异化定价管理。</p><p>　　具体来看，已经建好或开工的存量抽水蓄能电站，会继续按照老政策核定电价，避免经营收益大幅波动，给老项目吃下“定心丸”。对于633号文出台后开工的增量电站，采用“标杆容量电价+市场收益分享”的双重保障机制，既能通过统一标准的容量电价保证投资主体收回建设成本，又能让其通过参与电力市场获得更多收益，稳定投资预期、增强投资意愿。而114号文出台后拟开工的电站，将实行完全市场化的价格机制，靠顶峰发电能力拿补偿、靠电力市场交易赚收益，谁成本低、效率高、调峰能力强，谁就能获得更多收益，推动抽水蓄能行业从“靠政策”转向“靠本事”。</p><p>　　同时，114号文首次在国家层面明确新型储能的容量电价机制，让抽水蓄能与新型储能在同一套价格规则下公平竞争，凸显抽水蓄能技术成熟、安全可靠的长期优势。此外，对于跨区域共用的抽水蓄能电站，明确按容量分配比例分摊电费，推动项目更快更顺利推进。整体来看，这份文件让老项目稳收益、新项目有保障、未来项目靠市场竞争。</p><p>　　合理的电价机制是行业可持续发展的保障，广东在开展抽水蓄能市场化探索上先人一步。</p><p>　　2024年10月1日，广东梅州抽水蓄能电站以报量报价方式全电量参与电力现货市场，成为我国首个入市的抽水蓄能电站。该电站二期工程首台机组于2025年9月投产时，全部电量同步进入电力市场交易，首次实现“投产即入市”。截至2025年8月底，梅州抽水蓄能电站已累计交易市场电量超17.4亿千瓦时，响应市场需求启动4200余次。</p><p>　　梅州抽水蓄能电站的突破在于它改变了传统抽水蓄能电站的被动营收模式，转变为主动在现货市场中“低价抽水、高价发电”。这种模式极大提升了机组运行的灵活性，对新能源的消纳能力也显著增强。</p><p>　　从“计划电”到“市场电”的跨越，梅州抽水蓄能电站不仅为大湾区百万千瓦级抽水蓄能电站市场化运营提供了实践样本，更开辟了抽水蓄能市场化运营新路径。</p><p>　　未来，随着全国统一电力市场的构建和2030年抽水蓄能装机规模目标的推进，会有更多抽水蓄能电站复制梅州模式，逐步全面进入电力市场。</p><p>　　市场机制的持续健全完善，推动抽水蓄能行业健康有序发展。未来10年，在“双碳”目标与新型电力系统建设驱动下，抽水蓄能将通过规模、技术、效益全面升级，成为保障能源安全、推动绿色转型的核心支柱。（记者 杨苗苗）</p></span></div></div> <div class="back-top"><a href="javascript:void(0)" title="返回顶部" style="display: none;">返回顶部</a></div> <div class="hr_10"></div> <div class="hr_10"></div> <div class="hr_10"></div></div> <div class="article-other"><div class="hr_10"></div> <div class="hr_10"></div> <div class="clear"></div></div> <div class="hr_10"></div> <div class="hr_10"></div> <div class="hr_10"></div></div></div> <script src="http://www.nea.gov.cn/2015nyj/xinban/bottom.js" type="text/javascript"></script><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>无标题文档</title><style type="text/css">
+body, h1, h2, h3, h4, h5, h6, p, img, table, tr, td, ul, ol, li, dl, dt, dd, input, iframe, label, legend, map, object {
+	margin: 0px;
+	padding: 0px;
+}
+</style><iframe border="0" name="search" marginwidth="0" framespacing="0" marginheight="0" src="http://www.nea.gov.cn/2016/2016bottom.htm" frameborder="0" noresize width="100%" height="120" scrolling="no" vspale="0"></iframe>
+
+
+
+ <script src="http://www.nea.gov.cn/static/default/js/public/article-font.js" type="text/javascript"></script><script src="http://www.nea.gov.cn/detail/js/pager.js"></script><script src="http://www.nea.gov.cn/detail/js/cb-video.js"></script><script>
+        $(function () {
+            /* 分页调用 */
+            parsePagingFun({
+                // preText: 'prev',//上一页
+                // nextText: 'next',//下一页
+                id: 'detailContent', //正文分页id
+                num: 8 //显示页码数个数
+            })
+
+        })
+    </script><script src="//imgs.news.cn/webdig/xinhua_webdig.js" language="javascript" type="text/javascript" async=""></script></body>

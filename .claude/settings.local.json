@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun run:*)",
+      "Bash(bun x:*)",
+      "Bash(grep -r '// biome-ignore lint/suspicious/noConsole' src/ --include=*.ts --include=*.tsx -l)",
+      "Bash(claude skill:*)",
+      "Bash(claude skills:*)",
+      "Bash(scrapling extract:*)",
+      "WebSearch",
+      "Bash(/c/Users/Administrator/AppData/Local/Programs/Python/Python311/python.exe -m pip show scrapling)",
+      "Bash(/c/Users/Administrator/AppData/Local/Programs/Python/Python311/python.exe -m scrapling extract get \"http://www.nea.gov.cn/policy/index.html\" nea_news.html --timeout 60 2>&1)",
+      "Bash(/c/Users/Administrator/AppData/Local/Programs/Python/Python311/Scripts/scrapling.exe extract:*)",
+      "Bash(/c/Users/Administrator/AppData/Local/Programs/Python/Python311/python.exe /c/Users/Administrator/claude-code/scripts/news_agent.py \"新能源政策\" --industry=能源电力 --max=8 2>&1)"
+    ]
+  }
+}

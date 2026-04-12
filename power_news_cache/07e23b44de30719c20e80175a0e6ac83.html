@@ -1,0 +1,179 @@
+## 全景式碳排放核算系统发布
+
+发布日期: 发布时间：2026-04-10
+
+<body><div data="datasource:20260410d5a2ddf7e0df4d628be6cdb7c514eb31" datatype="content"><meta name="ArticleTitle" content="我国发布全球首个全景式碳排放核算系统"></div> <div data="datasource:20260410d5a2ddf7e0df4d628be6cdb7c514eb31" datatype="content"><meta name="PubDate" content="2026-04-10 09:59:39"></div> <div data="datasource:20260410d5a2ddf7e0df4d628be6cdb7c514eb31" datatype="content"><meta name="ContentSource" content="人民日报"></div> <meta name="description" content="国家能源网"><meta name="keywords" content="国家能源网"><title data="datasource:20260410d5a2ddf7e0df4d628be6cdb7c514eb31" datatype="content">
+            我国发布全球首个全景式碳排放核算系统---国家能源局
+        </title><link href="http://www.nea.gov.cn/static/default/css/public/master_nyj_v1.0.css" rel="stylesheet" type="text/css"><link href="http://www.nea.gov.cn/static/default/css/article.css" rel="stylesheet" type="text/css"><link href="http://www.nea.gov.cn/2015nyj/xinban/topbase.css" rel="stylesheet"><link href="http://www.nea.gov.cn/detail/css/cb_videoPlayer.css" rel="stylesheet"><script async="" src="//webd.home.news.cn/webdig.js?z=1"></script><script src="http://www.nea.gov.cn/static/default/js/public/jquery-1.9.1.min.js" type="text/javascript"></script><script language="javascript">
+        $(document).ready(function () {
+
+            var lefttmp = new Image();
+            lefttmp.src = "http://www.xinhuanet.com/photo/static/arr_left.cur";
+            var righttmp = new Image();
+            righttmp.src = "http://www.xinhuanet.com/photo/static/arr_right.cur";
+            leng = $("a", $("#div_currpage")).length;
+
+            if (leng != 0)
+            //curr里有a标签==稿件不止一页
+            {
+
+                //看一共有多少个a标签
+                leng = leng - 1;
+                var nextLin = $("a", $("#div_currpage"))[leng].href; //对于多页的情况，取得下一页的地址
+                var oneword = location.href + "#";
+                if (nextLin == oneword) {
+                    leng = leng - 1;
+                    nextLin = $("a", $("#div_currpage"))[leng].href;
+                }
+                var currurl = location
+                    .href; //当前页链接地址<meta http-equiv="expires" content="Sunday 26 October 2011 01:00 GMT" /> 
+
+                var underpd = currurl.substring(currurl.indexOf("c_") + 2, currurl.indexOf(".htm"));
+                if (underpd.indexOf("_") == -1) {
+
+                    prevLink = location.href; //如果是文章首页，则左键仍是替换到本页面
+                    nextLink = $("a", $("#div_currpage"))[0].href; //下一页的赋值
+                    setTimeout("window.opener=null;window.location.href='" + nextLink + "'", 60000); //30秒跳转到下一页
+                } else
+                //是末页，http://news.xinhuanet.com/photo/2011-08/06/c_121822530.htm
+                {
+                    //当前页分页号判断
+                    var currnum = currurl.indexOf(".htm"); //链接中第一次出现.htm的位置
+                    var underlineindex = currurl.lastIndexOf("_") + 1; //下划线甄别标识，第一页则不是下划线
+                    //下一页的分页号
+                    var nextnum = nextLin.indexOf(".htm"); //链接中第一次出现.htm的位置
+                    var underlinenext = nextLin.lastIndexOf("_") + 1; //下划线甄别标识，第一页则不是下划线
+                    var undernum = nextLin.substr(nextLin.indexOf("c_")).split("_").length - 1;
+
+                    var temp = currurl.substring(underlineindex, currnum); //当前页的分页号
+                    var nexttemp = nextLin.substring(underlinenext, nextnum); //最后a标签的分页号
+                    var boolx = parseInt(temp, 10) > parseInt(nexttemp, 10);
+
+                    if ((boolx) || (undernum == 1)) //末页
+
+                    {
+
+                        if ($("img", $("a", $("#content"))).length == 0) //没有带链接的图片
+
+                        {
+                            prevLink = nextLin;
+                            if (undernum == 1) {
+                                nextLink = nextLin;
+                            } else {
+                                nextLink = prevLink.substr(0, (prevLink.lastIndexOf("_"))) + ".htm";
+                            }
+                            setTimeout("window.opener=null;window.location.href='" + nextLink + "'",
+                                60000); //30秒跳转到下一页
+                        } else //末页正文图片有链接
+                        {
+                            prevLink = nextLin;
+                            nextLink = $("a", $("#content"))[0].href; //把正文第一个带链接的链接地址赋给下一页
+                        }
+
+                    } else //不是末页
+                    {
+
+                        prevLink = $("a", $("#div_currpage"))[0].href; //把正文第一个带链接的链接地址赋给下一页
+                        nextLink = nextLin; //把正文最后一个带链接的链接地址赋给下一页
+                    }
+
+                }
+            } else
+            //只有一页
+            {
+                prevLink = location.href;
+                nextLink = location.href;
+            }
+
+            document.onkeydown = pageEvent;
+
+            function pageEvent(evt) {
+                evt = evt || window.event;
+                var key = evt.which || evt.keyCode;
+                if (key == 37) location = prevLink;
+                if (key == 39) location = nextLink;
+            };
+
+            var lefturl = prevLink;
+            var righturl = nextLink;
+            var imgurl = righturl;
+
+            $("#content img").each(function () {
+                var width = $(this).width();
+                var thisImage = $(this);
+                //alert("01");
+                $(thisImage)[0].onmousemove = function () {
+
+                    if (event.offsetX < width / 2) {
+
+                        this.style.cursor = 'url(' + lefttmp.src + '),auto';
+                        imgurl = lefturl;
+                    } else {
+
+                        this.style.cursor = 'url(' + righttmp.src + '),auto';
+                        imgurl = righturl;
+                    }
+
+                }
+
+                $(thisImage)[0].onmouseup = function () {
+                    top.location = imgurl;
+
+                }
+            });
+
+        });
+    </script><script src="http://www.nea.gov.cn/2015nyj/xinban/topnav.js" type="text/javascript"></script><div class="top_nav">
+<div class="menu_area">
+<ul class="menu"><li><a href="http://www.nea.gov.cn" target="_blank">返回首页</a>|</li>
+<li><a href="http://www.nea.gov.cn/wzdt/index.htm" target="_blank">网站地图</a>|</li>
+<li><a onclick="SetHome(this,'http://www.nea.gov.cn/2015v/2015version.htm');" href="javascript:void(0);">设为首页</a>|</li>
+<li><a onclick="AddFavorite('我的网站',location.href)" href="javascript:void(0);">加入收藏</a>|</li>
+<li><a href="http://www.nea.gov.cn/lxwm/index.htm" target="_blank">联系我们</a>|</li>
+<li><a href="http://mail.nea.gov.cn/" target="_blank">工作邮箱登录</a></li>
+</ul></div>
+</div>
+<div class="top_area">
+<div class="search_box">
+<div class="small_search">
+        <form target="_blank" id="nyj" method="get" action="https://www.nea.gov.cn/search.htm?">
+<input class="text_area" type="text" id="searchword" name="kw" value="请输入关键字" onkeydown="KeyDown()"><a href="javascript:" type="submit class=" search_button onclick="searchsearch()"></a>
+<input class="search_button" type="submit" value=" "></form></div>
+<div class="topMenu">
+<ul><li><span><a href="http://www.nea.gov.cn" target="_blank">首 页</a></span></li>
+<li><span><a href="http://www.nea.gov.cn/zfxxgk/gkzn.htm" target="_blank">信息公开</a></span></li>
+<li><span><a href="http://www.nea.gov.cn/ldhd/index.htm" target="_blank">领导活动</a></span></li>
+<li><span><a href="http://www.nea.gov.cn/xwzx/index.htm" target="_blank">新闻中心</a></span></li>
+<li><span><a href="http://www.nea.gov.cn/xwzx/nyyw.htm" target="_blank">能源要闻</a></span></li>
+<li><span><a href="https://xzsp.nea.gov.cn/nea/" target="_blank">在线办事</a></span></li>
+</ul><div class="clear"></div>
+</div>
+</div>
+</div>
+<script src="http://www.nea.gov.cn/2015nyj/xinban/jquery.js" type="text/javascript"></script><div class="main-colum"><div class="now-site">您当前位置：<a href="http://www.nea.gov.cn/" target="_blank">首页</a> &gt; 正文</div> <div class="channel-page"><div class="article-title" data="datasource:20260410d5a2ddf7e0df4d628be6cdb7c514eb31" datatype="content"><div class="hr_10"></div> <div class="titles">
+                        我国发布全球首个全景式碳排放核算系统
+                    </div> <div class="hr_10"></div> <span class="times">
+                        发布时间：2026-04-10
+                    </span> <span class="author">
+                        来源：人民日报
+                    </span> <span class="switchsize"><b class="bigger">大</b><b class="medium">中</b><b class="smaller">小</b></span> <div class="arrow"></div></div> <div class="article-box"><div class="hr_10"></div> <div class="hr_10"></div> <div class="hr_10"></div> <div id="detail" data="datasource:20260410d5a2ddf7e0df4d628be6cdb7c514eb31" datatype="content"><div class="article-content"><span id="detailContent"><p style="text-align: center;"><span style="color: #000080;"><strong>我国发布全球首个全景式碳排放核算系统</strong></span></p><p style="text-align: center;"><span style="color: #000080;"><strong>为碳排放算一笔更科学的账</strong></span></p><p><span style="font-family: 楷体; color: #7e8c8d;">  4月8日，“磐石·禹衡碳核算大模型”1.0版在上海发布，首次将生产端、消费端与自然源纳入统一的全景框架，实现多口径、可协同的系统性核算，为我国参与全球气候治理、推动绿色低碳转型提供实质性支撑。</span></p><p>  碳排放，连接着每个人的生活，更关乎全球气候变化与治理。长期以来，碳排放这笔账主要采用联合国政府间气候变化专门委员会（IPCC）的“生产端”核算方法——谁生产，就算在谁头上。“全球大部分碳排放核算系统聚焦在生产端，忽视了消费端。”中国科学院上海高等研究院副院长魏伟表示，碳核算领域长期存在数据口径不一、核算周期长、更新滞后、核算过程不透明等痛点，如何更科学、更公允地核算这笔账，一直是国际社会面临的共同难题。</p><p>  4月8日，由中国科学院上海高等研究院牵头研发的“磐石·禹衡碳核算大模型”1.0版在上海发布。这是全球首个覆盖生产端、消费端及自然源的全景式碳排放核算系统，标志着我国在全球碳排放核算领域取得新突破，为解决全球碳核算领域的痛点提供了“中国方案”。</p><p><span style="color: #000080;"><strong>  不仅要算清“谁排放”，还要厘清“为谁排放”</strong></span></p><p>  温室气体排放导致全球气候变化。碳排放的精准核算不仅是国际气候履约的重要依据，也是国际碳定价的重要基础，关系到各国的产业发展空间与国际竞争力。</p><p>  传统碳核算体系存在短板。比如，2024年，中国出口的风机和光伏产品，在生产阶段产生约200万吨碳排放，却在运行阶段为全球贡献了约3.5亿吨碳减排收益。“没有从生产端到消费端的全景核算，这笔巨大贡献就被埋没了。”上海环境能源交易所董事长赖晓明说。</p><p>  “国际社会急需一套更科学、更公允的核算体系，不仅要算清‘谁排放’，还要厘清‘为谁排放’。”魏伟说，“磐石·禹衡碳核算大模型”正是基于这一现实需求而研发，“我们不是否定现有国际框架，而是在尊重IPCC科学共识的基础上，推动碳排放核算向更全景、更动态、更智能的方向演进。”</p><p>  大模型命名为“禹衡”，寓意深远：“禹”取自大禹治水、划定九州的典故，彰显中国方案立足全局、系统治理的智慧；“衡”源自北斗七星中最亮的“玉衡”星，象征大模型志在成为碳排放核算领域的时空标尺，为全球气候治理提供公允基准。</p><p><span style="color: #000080;"><strong>  首次将生产端、消费端与自然源纳入统一的全景框架</strong></span></p><p>  算清这笔账，并不容易。</p><p>  魏伟介绍，碳排放核算领域面临四大挑战：行业门类复杂、专业壁垒高；数据来源多、类型杂、更新频率不一；传统核算周期长、人力成本高；核算精度、时空分辨率和多口径协同能力不足。“磐石·禹衡碳核算大模型”以人工智能技术为核心驱动，构建了数据、算法、算力三层支撑体系，系统性地破解这些难题。</p><p>  在数据层，研究团队自主构建了覆盖生产端、消费端、自然源、碳溯源等关键维度的8类核心数据集，并与国家部门、行业机构、企业建立了协同对接机制，实现数据的高频更新与深度融合。目前，系统已累计汇聚208TB（太字节）的多格式碳数据，形成了高质量、多维度的“碳知识库”。</p><p>  在算法层，模型以中国科学院自主研发的“磐石·科学基础大模型”为基座，开发了拥有320亿参数的垂直领域大语言模型和智能数据库的对话接口与编程接口，并在此基础上打造了5个功能各异的专业智能体，可以分别实现工业体系流程数字化模拟及优化、贸易碳转移核算、生命周期评价、自然源核算及不确定性分析。其中，生命周期评价智能体能够自主实现目标与范围确定、清单分析、核算和结果解析全流程，完成产品碳足迹自动化核算。</p><p>  在算力层，通过构建高性能内部服务器集群，并与外部算力中心协同联动，实现了算力资源的全局优化与弹性供给。过去数周甚至数月才能完成的复杂核算，现在几分钟就能完成。</p><p>  “这不仅是技术工具的升级，更为全球节能减排事业提供重要的科学依据。”魏伟表示，模型首次将生产端、消费端与自然源纳入统一的全景框架，实现多口径、可协同的系统性核算。</p><p><span style="color: #000080;"><strong>  为我国参与全球气候治理、推动绿色低碳转型提供支撑</strong></span></p><p>  “磐石·禹衡碳核算大模型”的应用价值已在多个关键场景中凸显，为我国参与全球气候治理、推动绿色低碳转型提供实质性支撑。</p><p>  基于新模型核算，以2022年为例，在涵盖消费端与贸易转移的全景视角下，中国、美国、日本的温室气体排放量，相较于IPCC传统的生产端核算结果，分别调整了-17.7%、+15.2%和+7.2%。这一变化客观反映了全球产业链分工下的碳排放责任分配，为建立更加公平合理的国际责任分担机制提供了科学依据。</p><p>  国家应对气候变化战略研究和国际合作中心首席科学家徐华清说：“希望团队强化高精度核算计量设备的研发，运用区块链等现代信息技术保障数据安全，同时积极对标国际相关规则和标准，构建具有国际兼容性的数据接口，增强不同规则口径下的数据转换能力，支持我国在参与和引领全球气候治理中发出更强有力的中国声音。”</p><p>  对于产业而言，这是更准确量化产品碳排放、更精准推动绿色转型的“指挥棒”。在中国21世纪议程管理中心气候变化处处长张贤看来，大模型中的工业智能体可以发挥“数字孪生工厂”的作用，模拟不同工艺路线、能源结构下的碳排放情景，帮助企业识别碳减排关键环节，规划转型路径。</p><p>  魏伟长期从事二氧化碳捕集利用与封存、催化新材料及碳战略研究。2024年，他带领团队发布了首份对消费端碳排放进行系统研究与核算的研究报告。魏伟表示，研究团队将持续迭代优化模型，形成具有自主知识产权的算法、数据和报告，为我国国家温室气体清单编制、全国碳市场建设、重点产业绿色转型及国际碳政策应对等重大需求提供支撑。</p><p>  碳排放的“全球公账”，期待一架更精准、更公允的“科学天平”。在这架天平上，发展的权利与保护地球的责任，将得到前所未有的清晰衡量。</p></span></div></div> <div class="back-top"><a href="javascript:void(0)" title="返回顶部" style="display: none;">返回顶部</a></div> <div class="hr_10"></div> <div class="hr_10"></div> <div class="hr_10"></div></div> <div class="article-other"><div class="hr_10"></div> <div class="hr_10"></div> <div class="clear"></div></div> <div class="hr_10"></div> <div class="hr_10"></div> <div class="hr_10"></div></div></div> <script src="http://www.nea.gov.cn/2015nyj/xinban/bottom.js" type="text/javascript"></script><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>无标题文档</title><style type="text/css">
+body, h1, h2, h3, h4, h5, h6, p, img, table, tr, td, ul, ol, li, dl, dt, dd, input, iframe, label, legend, map, object {
+	margin: 0px;
+	padding: 0px;
+}
+</style><iframe border="0" name="search" marginwidth="0" framespacing="0" marginheight="0" src="http://www.nea.gov.cn/2016/2016bottom.htm" frameborder="0" noresize width="100%" height="120" scrolling="no" vspale="0"></iframe>
+
+
+
+ <script src="http://www.nea.gov.cn/static/default/js/public/article-font.js" type="text/javascript"></script><script src="http://www.nea.gov.cn/detail/js/pager.js"></script><script src="http://www.nea.gov.cn/detail/js/cb-video.js"></script><script>
+        $(function () {
+            /* 分页调用 */
+            parsePagingFun({
+                // preText: 'prev',//上一页
+                // nextText: 'next',//下一页
+                id: 'detailContent', //正文分页id
+                num: 8 //显示页码数个数
+            })
+
+        })
+    </script><script src="//imgs.news.cn/webdig/xinhua_webdig.js" language="javascript" type="text/javascript" async=""></script></body>
