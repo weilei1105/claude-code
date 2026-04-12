@@ -1,21 +1,33 @@
 {
   "name": "news-agent-web",
   "version": "1.0.0",
+  "description": "AI-powered professional report generation system",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "server": "cd server && python main.py",
-    "start": "concurrently \"npm run server\" \"npm run dev\""
+    "start": "concurrently \"npm run server\" \"npm run dev\"",
+    "lint": "eslint src --ext .vue,.js,.jsx,.ts --fix",
+    "test": "vitest"
   },
   "dependencies": {
-    "vue": "^3.4.0",
-    "axios": "^1.6.0"
+    "axios": "^1.6.8",
+    "highlight.js": "^11.9.0",
+    "marked": "^12.0.0",
+    "vue": "^3.4.21"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.0",
-    "vite": "^5.0.0",
-    "concurrently": "^8.2.0"
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.22.0",
+    "vite": "^5.1.6",
+    "vitest": "^1.3.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

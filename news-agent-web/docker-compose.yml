@@ -1,0 +1,60 @@
+# News Agent Web - Docker Compose Configuration
+# Production deployment with frontend and backend
+
+services:
+  # Backend API service
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: news-agent-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - CLAUDE_CODE_PATH=/app/.claude-code
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8000
+      - PROCESS_POOL_SIZE=2
+      - SIMPLE_TIMEOUT=300
+      - DEPTH_TIMEOUT=900
+    volumes:
+      # Mount Claude Code directory
+      - claude-code-data:/app/.claude-code
+      # Persist generated reports
+      - reports-data:/app/generated_reports
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - news-agent-network
+
+  # Frontend web service
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: news-agent-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - news-agent-network
+
+# Volume definitions for data persistence
+volumes:
+  claude-code-data:
+    driver: local
+  reports-data:
+    driver: local
+
+# Network definition
+networks:
+  news-agent-network:
+    driver: bridge
