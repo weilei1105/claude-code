@@ -1,144 +1,149 @@
 <template>
   <div class="container">
-    <header class="header">
-      <h1>📊 智能报告生成器</h1>
-      <p class="subtitle">基于 Scrapling + Claude AI 的专业报告生成</p>
-    </header>
-
     <main class="main">
-      <!-- 输入区域 -->
-      <section class="input-section">
-        <div class="form-group">
-          <label>报告主题</label>
-          <input
-            v-model="topic"
-            type="text"
-            placeholder="例如：新能源汽车、储能行业、半导体产业..."
-            class="input"
-            :disabled="loading"
-            @keyup.enter="startGenerate"
-          />
-        </div>
+      <!-- 左侧筛选区域 -->
+      <aside class="sidebar">
+        <section class="input-section">
+          <div class="sidebar-header">
+            <h1>📊 智能报告生成智能体</h1>
+          </div>
+          <div class="form-group">
+            <label>报告主题</label>
+            <input
+              v-model="topic"
+              type="text"
+              placeholder="例如：新能源汽车、储能行业、半导体产业..."
+              class="input"
+              :disabled="loading"
+              @keyup.enter="startGenerate"
+            />
+          </div>
 
-        <div class="form-group">
-          <label>报告类型</label>
-          <div class="report-types">
-            <label
-              v-for="(name, key) in reportTypes"
-              :key="key"
-              class="type-option"
-              :class="{ active: reportType === key, disabled: loading }"
+          <div class="form-group">
+            <label>报告类型</label>
+            <div class="report-types">
+              <label
+                v-for="(name, key) in reportTypes"
+                :key="key"
+                class="type-option"
+                :class="{ active: reportType === key, disabled: loading }"
+              >
+                <input
+                  type="radio"
+                  :value="key"
+                  v-model="reportType"
+                  :disabled="loading"
+                />
+                <span class="type-name">{{ name }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>报告深度</label>
+            <div class="depth-options">
+              <label
+                class="type-option"
+                :class="{ active: reportDepth === 'simple', disabled: loading }"
+              >
+                <input
+                  type="radio"
+                  value="simple"
+                  v-model="reportDepth"
+                  :disabled="loading"
+                />
+                <span class="type-name">简要报告</span>
+                <span class="type-desc">3-4章节，3-5分钟</span>
+              </label>
+              <label
+                class="type-option"
+                :class="{ active: reportDepth === 'depth', disabled: loading }"
+              >
+                <input
+                  type="radio"
+                  value="depth"
+                  v-model="reportDepth"
+                  :disabled="loading"
+                />
+                <span class="type-name">深度报告</span>
+                <span class="type-desc">6-9章节，8-15分钟</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button
+              @click="startGenerate"
+              class="btn-primary"
+              :disabled="!topic || loading"
             >
-              <input
-                type="radio"
-                :value="key"
-                v-model="reportType"
-                :disabled="loading"
-              />
-              <span class="type-name">{{ name }}</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>报告深度</label>
-          <div class="depth-options">
-            <label
-              class="type-option"
-              :class="{ active: reportDepth === 'simple', disabled: loading }"
+              {{ loading ? '生成中...' : '生成报告' }}
+            </button>
+            <button
+              v-if="loading"
+              @click="stopGenerate"
+              class="btn-stop"
             >
-              <input
-                type="radio"
-                value="simple"
-                v-model="reportDepth"
-                :disabled="loading"
-              />
-              <span class="type-name">简要报告</span>
-              <span class="type-desc">3-4章节，3-5分钟</span>
-            </label>
-            <label
-              class="type-option"
-              :class="{ active: reportDepth === 'depth', disabled: loading }"
-            >
-              <input
-                type="radio"
-                value="depth"
-                v-model="reportDepth"
-                :disabled="loading"
-              />
-              <span class="type-name">深度报告</span>
-              <span class="type-desc">6-9章节，8-15分钟</span>
-            </label>
+              停止
+            </button>
+          </div>
+        </section>
+
+        <!-- 错误提示 -->
+        <section v-if="errorMessage" class="error-section">
+          <p class="error-text">{{ errorMessage }}</p>
+        </section>
+      </aside>
+
+      <!-- 右侧报告内容区域 -->
+      <section class="content-area">
+        <!-- 进度显示 -->
+        <div v-if="loading" class="progress-section">
+          <div class="progress-info">
+            <div class="spinner"></div>
+            <p class="progress-text">{{ statusMessage }}</p>
+            <div class="time-info">
+              <span class="time-badge">
+                <span class="time-label">已用时</span>
+                <span class="time-value">{{ formatTime(elapsedSeconds) }}</span>
+              </span>
+              <span v-if="remainingSeconds > 0" class="time-badge estimate">
+                <span class="time-label">预计剩余</span>
+                <span class="time-value">{{ formatTime(remainingSeconds) }}</span>
+              </span>
+            </div>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar">
+              <div class="progress-fill" :style="{ width: progressPercent + '%' }"></div>
+            </div>
+            <span class="progress-percent">{{ progressPercent }}%</span>
           </div>
         </div>
 
-        <div class="btn-row">
-          <button
-            @click="startGenerate"
-            class="btn-primary"
-            :disabled="!topic || loading"
-          >
-            {{ loading ? '生成中...' : '生成报告' }}
-          </button>
-          <button
-            v-if="loading"
-            @click="stopGenerate"
-            class="btn-stop"
-          >
-            停止
-          </button>
-        </div>
-      </section>
-
-      <!-- 进度显示 -->
-      <section v-if="loading" class="progress-section">
-        <div class="progress-info">
-          <div class="spinner"></div>
-          <p class="progress-text">{{ statusMessage }}</p>
-          <div class="time-info">
-            <span class="time-badge">
-              <span class="time-label">已用时</span>
-              <span class="time-value">{{ formatTime(elapsedSeconds) }}</span>
-            </span>
-            <span v-if="remainingSeconds > 0" class="time-badge estimate">
-              <span class="time-label">预计剩余</span>
-              <span class="time-value">{{ formatTime(remainingSeconds) }}</span>
-            </span>
+        <!-- 报告内容 -->
+        <div v-else-if="reportContent" class="report-section">
+          <div class="report-header">
+            <div class="report-title">
+              <h2>📋 生成的报告</h2>
+              <span v-if="generationTime" class="gen-time-badge">
+                ⏱️ 生成耗时: {{ formatTime(generationTime) }}
+              </span>
+            </div>
+            <button @click="downloadReport" class="btn-download">
+              📥 下载报告
+            </button>
           </div>
+          <div class="report-content markdown-body" v-html="renderedContent"></div>
         </div>
-        <div class="progress-bar-container">
-          <div class="progress-bar">
-            <div class="progress-fill" :style="{ width: progressPercent + '%' }"></div>
-          </div>
-          <span class="progress-percent">{{ progressPercent }}%</span>
-        </div>
-      </section>
 
-      <!-- 错误提示 -->
-      <section v-if="errorMessage" class="error-section">
-        <p class="error-text">{{ errorMessage }}</p>
-      </section>
-
-      <!-- 报告展示 -->
-      <section v-if="reportContent" class="report-section">
-        <div class="report-header">
-          <div class="report-title">
-            <h2>📋 生成的报告</h2>
-            <span v-if="generationTime" class="gen-time-badge">
-              ⏱️ 生成耗时: {{ formatTime(generationTime) }}
-            </span>
-          </div>
-          <button @click="downloadReport" class="btn-download">
-            📥 下载报告
-          </button>
+        <!-- 空状态 -->
+        <div v-else class="empty-state">
+          <div class="empty-icon">📊</div>
+          <p class="empty-text">选择主题并点击"生成报告"开始</p>
         </div>
-        <div class="report-content markdown-body" v-html="renderedContent"></div>
       </section>
     </main>
-
-    <footer class="footer">
-      <p>基于 <a href="https://github.com/D4Vinci/Scrapling" target="_blank">Scrapling</a> + Claude AI 构建</p>
-    </footer>
   </div>
 </template>
 
@@ -349,63 +354,81 @@ function downloadReport() {
 @import 'highlight.js/styles/github.css';
 
 .container {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background: #f8fafc;
 }
 
-.header {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  color: white;
-  padding: 2.5rem 2rem;
-  text-align: center;
+.sidebar-header {
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e2e8f0;
 }
 
-.header h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
-
-.subtitle {
-  opacity: 0.85;
-  font-size: 1rem;
+.sidebar-header h1 {
+  font-size: 1.1rem;
+  color: #1a1a2e;
+  margin: 0;
+  font-weight: 600;
 }
 
 .main {
   flex: 1;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
   width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  width: 340px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.content-area {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-area .progress-section,
+.content-area .report-section {
+  flex: 1;
 }
 
 .input-section {
   background: white;
   border-radius: 16px;
-  padding: 2rem;
+  padding: 1.5rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  margin-bottom: 1.5rem;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-group label {
   display: block;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   color: #1a1a2e;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .input {
   width: 100%;
-  padding: 1rem 1.25rem;
+  padding: 0.875rem 1rem;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -423,19 +446,19 @@ function downloadReport() {
 .report-types {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .depth-options {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .type-option {
   display: flex;
   align-items: center;
-  padding: 0.875rem 1rem;
+  padding: 0.75rem;
   border: 2px solid #e2e8f0;
   border-radius: 10px;
   cursor: pointer;
@@ -462,12 +485,12 @@ function downloadReport() {
 }
 
 .type-name {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #334155;
 }
 
 .type-desc {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #64748b;
   margin-left: auto;
 }
@@ -479,19 +502,18 @@ function downloadReport() {
 
 .btn-row {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   justify-content: center;
 }
 
 .btn-primary {
   flex: 1;
-  max-width: 300px;
-  padding: 1rem 2rem;
+  padding: 0.875rem 1.5rem;
   background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
   color: white;
   border: none;
   border-radius: 12px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -509,7 +531,7 @@ function downloadReport() {
 }
 
 .btn-stop {
-  padding: 1rem 2rem;
+  padding: 0.875rem 1.5rem;
   background: #dc2626;
   color: white;
   border: none;
@@ -527,9 +549,8 @@ function downloadReport() {
 .progress-section {
   background: white;
   border-radius: 16px;
-  padding: 2rem;
+  padding: 1.5rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  margin-bottom: 1.5rem;
 }
 
 .progress-info {
@@ -823,19 +844,25 @@ function downloadReport() {
   border: 0;
 }
 
-.footer {
-  text-align: center;
-  padding: 2rem;
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 400px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.empty-text {
   color: #64748b;
-  font-size: 0.9rem;
-}
-
-.footer a {
-  color: #0f3460;
-  text-decoration: none;
-}
-
-.footer a:hover {
-  text-decoration: underline;
+  font-size: 1.1rem;
 }
 </style>

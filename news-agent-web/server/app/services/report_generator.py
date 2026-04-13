@@ -39,9 +39,38 @@ class TaskStatus:
 tasks: dict[str, TaskStatus] = {}
 
 
+# ============== Topic Polishing ==============
+def polish_topic(topic: str, report_type: str) -> str:
+    """Polish user input topic into a proper report title."""
+    # Common industry suffixes
+    industry_suffixes = ["行业", "市场", "产业", "领域"]
+    # Check if topic already has a suitable suffix
+    has_suffix = any(topic.endswith(s) for s in industry_suffixes + ["分析", "趋势", "报告"])
+
+    if has_suffix:
+        return topic
+
+    # Add appropriate suffix based on report type
+    polish_map = {
+        "trend": "行业趋势分析",
+        "compare": "市场对比分析",
+        "comprehensive": "综合评估报告",
+        "policy": "政策解读",
+    }
+
+    suffix = polish_map.get(report_type, "行业分析")
+    # Handle topics that are already complete phrases
+    if len(topic) <= 6:
+        return topic + suffix
+    else:
+        return topic + "：" + suffix
+
+
 # ============== Prompt Templates ==============
 def generate_prompt(topic: str, report_type: str, depth: str = "simple") -> str:
     """Generate prompt based on report type and depth."""
+
+    polished_topic = polish_topic(topic, report_type)
 
     simple_prompts = {
         "trend": (
@@ -52,7 +81,7 @@ def generate_prompt(topic: str, report_type: str, depth: str = "simple") -> str:
             "2. 分析核心趋势和要点\n"
             "3. 输出完整的 Markdown 报告内容\n\n"
             "报告结构（3章，每章至少3段）：\n"
-            "# " + topic + " 趋势分析报告\n\n"
+            "# " + polished_topic + "\n\n"
             "## 一、行业现状\n"
             "## 二、核心趋势\n"
             "## 三、发展展望\n\n"
@@ -65,7 +94,7 @@ def generate_prompt(topic: str, report_type: str, depth: str = "simple") -> str:
             "2. 对比分析核心差异\n"
             "3. 输出完整的 Markdown 报告内容\n\n"
             "报告结构（3章，每章至少3段）：\n"
-            "# " + topic + " 对比分析报告\n\n"
+            "# " + polished_topic + "\n\n"
             "## 一、对比对象概述\n"
             "## 二、核心对比\n"
             "## 三、结论\n\n"
@@ -78,7 +107,7 @@ def generate_prompt(topic: str, report_type: str, depth: str = "simple") -> str:
             "2. 进行综合评估\n"
             "3. 输出完整的 Markdown 报告内容\n\n"
             "报告结构（3章，每章至少3段）：\n"
-            "# " + topic + " 综合评估报告\n\n"
+            "# " + polished_topic + "\n\n"
             "## 一、评估概述\n"
             "## 二、核心发现\n"
             "## 三、结论与建议\n\n"
@@ -91,7 +120,7 @@ def generate_prompt(topic: str, report_type: str, depth: str = "simple") -> str:
             "2. 解读核心内容和影响\n"
             "3. 输出完整的 Markdown 报告内容\n\n"
             "报告结构（3章，每章至少3段）：\n"
-            "# " + topic + " 政策解读报告\n\n"
+            "# " + polished_topic + "\n\n"
             "## 一、政策概述\n"
             "## 二、核心内容\n"
             "## 三、影响与建议\n\n"
@@ -108,7 +137,7 @@ def generate_prompt(topic: str, report_type: str, depth: str = "simple") -> str:
             "4. 预测未来1-3年的发展方向\n"
             "5. 直接输出完整 Markdown 内容，禁止保存任何文件！\n\n"
             "报告结构：\n"
-            "# " + topic + " 趋势分析报告\n\n"
+            "# " + polished_topic + "\n\n"
             "## 一、行业现状概述\n"
             "## 二、市场趋势分析\n"
             "## 三、驱动因素与制约因素\n"
@@ -126,7 +155,7 @@ def generate_prompt(topic: str, report_type: str, depth: str = "simple") -> str:
             "4. 给出客观的对比结论\n"
             "5. 直接输出完整 Markdown 内容，禁止保存任何文件！\n\n"
             "报告结构：\n"
-            "# " + topic + " 对比分析报告\n\n"
+            "# " + polished_topic + "\n\n"
             "## 一、对比对象概述\n"
             "## 二、核心指标对比\n"
             "### 2.1 市场规模与份额\n"
@@ -148,7 +177,7 @@ def generate_prompt(topic: str, report_type: str, depth: str = "simple") -> str:
             "4. 给出综合评分或评级\n"
             "5. 直接输出完整 Markdown 内容，禁止保存任何文件！\n\n"
             "报告结构：\n"
-            "# " + topic + " 综合评估报告\n\n"
+            "# " + polished_topic + "\n\n"
             "## 一、评估对象定义\n"
             "## 二、评估维度与指标体系\n"
             "## 三、政策环境评估\n"
@@ -169,7 +198,7 @@ def generate_prompt(topic: str, report_type: str, depth: str = "simple") -> str:
             "4. 预测政策后续走向和配套措施\n"
             "5. 直接输出完整 Markdown 内容，禁止保存任何文件！\n\n"
             "报告结构：\n"
-            "# " + topic + " 政策解读报告\n\n"
+            "# " + polished_topic + "\n\n"
             "## 一、政策概述\n"
             "### 1.1 政策背景\n"
             "### 1.2 政策目标\n"
@@ -214,24 +243,50 @@ def parse_skill_output(output: str) -> tuple:
 
     lines = output.split('\n')
     report_lines = []
-    in_report = False
+    started = False
 
     for line in lines:
-        if 'report_' in line.lower() and '.md' in line.lower():
-            in_report = True
-        if 'error' in line.lower() or 'failed' in line.lower():
-            if not in_report:
+        # Skip empty lines before report starts
+        if not started:
+            # Skip info messages like "好消息：", "使用 scrapling", etc.
+            if not line.strip():
                 continue
-        if in_report:
+            if line.strip().startswith('event:') or line.strip().startswith('data:'):
+                continue
+            # Skip known non-content prefixes
+            skip_prefixes = ['好消息', '坏消息', '使用', '正在', '错误', 'error', 'failed', 'warning', 'info']
+            if any(line.strip().lower().startswith(p.lower()) for p in skip_prefixes):
+                continue
+            # Skip lines that are clearly not markdown headings
+            stripped = line.strip()
+            if not stripped.startswith('# ') and not stripped.startswith('## '):
+                # Check if it looks like a log/info line
+                if ':' in stripped and len(stripped) < 100:
+                    continue
+                # Check if it's a skill invocation line
+                if stripped.startswith('/') or 'skill' in stripped.lower():
+                    continue
+
+        # Start capturing from first markdown heading or content
+        if not started:
+            if line.strip().startswith('# ') or line.strip().startswith('## '):
+                started = True
+            elif line.strip() and not line.startswith('event:') and not line.startswith('data:'):
+                # Skip lines that are too short or look like system messages
+                if len(line.strip()) > 20 and not any(c in line for c in ['$', '>', '→', '•']):
+                    started = True
+
+        if started:
             report_lines.append(line)
 
-    if not report_lines:
-        for i, line in enumerate(lines):
-            if line.strip().startswith('# ') and i > 0:
-                report_lines = lines[i:]
-                break
-
     report = '\n'.join(report_lines).strip()
+
+    # If still empty, try to find any content starting with # heading
+    if not report:
+        for i, line in enumerate(lines):
+            if line.strip().startswith('# ') or line.strip().startswith('## '):
+                report = '\n'.join(lines[i:]).strip()
+                break
 
     if not report and output:
         error_patterns = ['error', 'failed', 'not found', 'permission denied']

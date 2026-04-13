@@ -9,7 +9,7 @@
   <meta name="robots" content="index, follow">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="智能报告生成器 - News Agent Web">
+  <meta property="og:title" content="智能报告生成智能体 - News Agent Web">
   <meta property="og:description" content="基于 Scrapling + Claude AI 的专业报告生成系统">
   <meta property="og:type" content="website">
 
@@ -19,7 +19,7 @@
   <!-- Preconnect to API -->
   <link rel="preconnect" href="/api">
 
-  <title>智能报告生成器 - News Agent Web</title>
+  <title>智能报告生成智能体 - News Agent Web</title>
 
   <style>
     * {
@@ -35,32 +35,10 @@
     #app {
       min-height: 100vh;
     }
-    /* Initial loading state */
-    .app-loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      font-size: 1.125rem;
-      color: #64748b;
-    }
-    .app-loading::after {
-      content: '';
-      width: 20px;
-      height: 20px;
-      margin-left: 12px;
-      border: 2px solid #e2e8f0;
-      border-top-color: #0f3460;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
   </style>
 </head>
 <body>
-  <div id="app" class="app-loading">加载中</div>
+  <div id="app"></div>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>
